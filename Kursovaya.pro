@@ -6,8 +6,10 @@ CONFIG -= qt
 SOURCES += \
         Student.cpp \
         book.cpp \
-        main.cpp
+        main.cpp \
+        transaction.cpp
 
 HEADERS += \
     Student.h \
-    book.h
+    book.h \
+    transaction.h

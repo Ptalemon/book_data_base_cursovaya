@@ -14,6 +14,10 @@ Book::Book(book struct_book_data){
     data_book = {id, author, title, year, total, left};
 }
 
+Book::~Book(){
+    data_book = {NULL, NULL, NULL, NULL, NULL, NULL};
+}
+
 bool Book::check_availability(){
     //Check amount of book
     if(data_book.available_copies != 0){

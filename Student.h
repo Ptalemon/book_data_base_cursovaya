@@ -1,10 +1,8 @@
 #ifndef STUDENT_H
 #define STUDENT_H
 #include <book.h>
-#include <vector>
 #include <string>
 #include <iostream>
-#include <algorithm>
 
 using namespace std;
 
@@ -27,6 +25,7 @@ public:
     Student(int, string, string, int, int, int, string, string,
             string, string, string, string, string);
     ~Student();
+    Student(student);
     Student(const Student&, const book&);
 
     void get_borrowed_books();
