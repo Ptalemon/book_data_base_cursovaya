@@ -1,51 +1,45 @@
 #include "book.h"
 
-Book::Book(int ID, string author, string title, int year, int total, int left){
-    data_book = {ID, author, title, year, total, left};
+Book::Book():book_id(""), author(""), title(""), total_copies(0), available_copies(0){}
+
+Book::Book(string ID, string book_author, string book_title, int total, int left):
+    book_id(ID), author(book_author), title(book_title), total_copies(total), available_copies(left){}
+
+bool Book::isAvailable(){
+    return available_copies > 0;
 }
 
-Book::Book(book struct_book_data){
-    int id = struct_book_data.book_id;
-    string author = struct_book_data.author;
-    string title = struct_book_data.title;
-    int year = struct_book_data.year_published;
-    int total = struct_book_data.total_copies;
-    int left = struct_book_data.available_copies;
-    data_book = {id, author, title, year, total, left};
-}
-
-Book::~Book(){
-    data_book = {NULL, NULL, NULL, NULL, NULL, NULL};
-}
-
-bool Book::check_availability(){
-    //Check amount of book
-    if(data_book.available_copies != 0){
-        cout << "There're some books " << data_book.title << " by " <<
-                data_book.author << ". There're left: " <<
-                data_book.available_copies << " copies." << endl;
-        return true;
-    }
-    if(data_book.available_copies == 0){
-      cout << "There're no more copies of such book" << endl;
-      return false;
-    }
-    else{
-        cout << "Error appeared. Please, recalculate." << endl;
-        return false;
+void Book::issue_book(){
+    if(isAvailable()){
+        available_copies--;
     }
 }
 
-void Book::update_copies(int change, int status = 0){
-    //Update amount of books. 0 - decrease, 1 - increase
-    if(((data_book.available_copies - change) > 0) and status == 0){
-        data_book.available_copies -= change;
+void Book::return_book(){
+    if(isAvailable()){
+        available_copies++;
     }
-    if(((data_book.available_copies + change) < data_book.total_copies) and status == 1){
-        data_book.available_copies += change;
-    }
-    else{
-        cout << "There're not enough books for such operation or too much."
-                " Please, enter new amount." << endl;
-    }
+}
+
+void Book::display(){
+    cout << "Inventory Number: " << book_id << "\n"
+         << "Title: " << title << " by " << author << "\n"
+         << "Total Copies: " << total_copies << "\n"
+         << "Issued Copies: " << total_copies - available_copies << "\n"
+         << "Available Copies: " << available_copies << endl;
+}
+
+void Book::save_to_file(ofstream& out) const{
+    out << book_id << "|" << author << "|" << title << "|"
+        << total_copies << "|" << available_copies << endl;
+}
+
+void Book::load_from_file(ifstream & in){
+    getline(in, book_id, '|');
+    getline(in, author, '|');
+    getline(in, title, '|');
+    in >> total_copies;
+    in.ignore();
+    in >> available_copies;
+    in.ignore();
 }
